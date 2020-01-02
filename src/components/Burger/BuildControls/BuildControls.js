@@ -1,5 +1,5 @@
 import React from 'react'; 
-import classes from './BuildControls.module.css'
+import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildContorl';
 
 const controls =[
@@ -21,6 +21,7 @@ const buildControls = (props) => (
                 disabled = {props.disabled[ctrl.type]}
                 />
         ))}
+        <button className= {classes.OrderButton} disabled={!props.checkOut}>CHECK OUT</button>
     </div>
 );
 
