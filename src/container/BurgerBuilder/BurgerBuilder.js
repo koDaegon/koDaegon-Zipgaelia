@@ -1,4 +1,5 @@
 import React ,{Component} from 'react';
+import {Link} from 'react-router-dom';
 import Aux from '../../hoc/Auxiliary/Auxiliary'; 
 import Burger from  '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -7,6 +8,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-order';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
+
 
 const INGREDIENT_PRICES ={
         salad : 0.5,
@@ -26,6 +28,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         axios.get('https://zipgaelia.firebaseio.com/ingredients.json')
         .then(response => {
             this.setState({ingredients: response.data});
@@ -33,6 +36,12 @@ class BurgerBuilder extends Component {
         .catch(error => {
             this.setState({error: true});
         });
+    }
+
+    componentDidUpdate () {
+        console.log('Update');
+        console.log(this.props);
+        
     }
 
     updatePurchaseStatus =  (ingredients) => {
@@ -112,8 +121,15 @@ class BurgerBuilder extends Component {
         // .catch(error => {
         //     this.setState({loading: false, reviewPurchase: false});
         // }); 
-        
-
+        const queryParams = [];
+        for(let i in this.state.ingredients) {
+            queryParams.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`);
+        }
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname:  '/checkout', 
+            search : '?'+ queryString            
+        });
     };
 
     render() {
@@ -152,12 +168,11 @@ class BurgerBuilder extends Component {
         if(this.state.loading) {
             orderSummary = <Spinner/>;
         }
-
         return(
             <Aux>
                 <Modal show= {this.state.reviewPurchase} modalClosed= {this.purchaseCancelHandler}>
                     {orderSummary}
-                </Modal>
+                </Modal>            
                  {burger}
             </Aux>
         );
