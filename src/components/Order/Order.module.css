@@ -1,0 +1,13 @@
+.Order {
+    width: 100%;
+    border: 1px solid gainsboro;
+    box-shadow: 0;
+}
+
+.Ingredient {
+    text-transform: capitalize;
+    display: inline-block;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    padding: 3px;
+}
