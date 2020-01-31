@@ -3,6 +3,7 @@ import axios from '../../../axios-order';
 import classes from './Payment.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 
 class Payment extends Component {
 
@@ -47,10 +48,10 @@ class Payment extends Component {
     render() {
         let form = <div>Please input your information for payment
                         <form>
-                            Full name: <input className={classes.Input} type="text" name="name" placeholder="Full Name"></input>
-                            <br /> Email: <input className={classes.Input} type="text" name="email" placeholder="email"></input>
-                            <br /> Street: <input className={classes.Input} type="text" name="address_street" placeholder="Street"></input>
-                            <br /> ZipCode: <input className={classes.Input} type="text" name="address_zipCode" placeholder="Zipcode"></input>
+                            <Input inputtype='input' type="text" name="name" placeholder="Full Name" />
+                            <Input inputtype='input' type="text" name="email" placeholder="email" />
+                            <Input inputtype='input' type="text" name="address_street" placeholder="Street" />
+                            <Input inputtype='input' type="text" name="address_zipCode" placeholder="Zipcode" />
                         </form>
                         <Button btnType="Success" clicked={this.paymentHandler}>Checkout</Button>
                     </div>;
