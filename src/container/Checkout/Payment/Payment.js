@@ -9,13 +9,63 @@ class Payment extends Component {
 
     state = {
         loading: false,
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            zipCode: ''
+        orderForms: {
+            name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Name'
+                },
+                value: '',
+            },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'email',
+                    placeholder: 'Your email'
+                },
+                value: '',
+            },
+            street: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Street'
+                },
+                value: '',
+            },
+            zipCode: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'number',
+                    placeholder: 'Zipcode'
+                },
+                value: '',
+            },
+            country: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Country'
+                },
+                value: '',
+            },
+            deliveryMethod: {
+                elementType: 'select',
+                elementConfig: {
+                    options: [
+                        {value: 'express' , displayName: 'Express'},
+                        {value: 'regular', displayName: 'Regular'}
+                        ]
+                },
+                value: '',
+            }
         }
     }
+    onChangeHandler = (event) => {
+        console.log(event.target.value);
+    };
+
     paymentHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
@@ -43,15 +93,27 @@ class Payment extends Component {
         console.log(order);
         console.log(this.props);
         this.props.history.push('/');
-    }
+    };
     
     render() {
+        let formElementsArray = [];
+        for(let key in this.state.orderForms) {
+            formElementsArray.push({
+                id: key,
+                config: this.state.orderForms[key]
+            })
+        }
         let form = <div>Please input your information for payment
                         <form>
-                            <Input inputtype='input' type="text" name="name" placeholder="Full Name" />
-                            <Input inputtype='input' type="text" name="email" placeholder="email" />
-                            <Input inputtype='input' type="text" name="address_street" placeholder="Street" />
-                            <Input inputtype='input' type="text" name="address_zipCode" placeholder="Zipcode" />
+                            {formElementsArray.map(orderForms => (
+                                <Input
+                                    key ={orderForms.id} 
+                                    inputtype={orderForms.config.elementType} 
+                                    elementConfig={orderForms.config.elementConfig}
+                                    value={orderForms.config.value}
+                                    changed={this.onChangeHandler}
+                                />
+                            ))}
                         </form>
                         <Button btnType="Success" clicked={this.paymentHandler}>Checkout</Button>
                     </div>;
