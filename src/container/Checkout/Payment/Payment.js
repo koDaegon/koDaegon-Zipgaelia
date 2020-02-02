@@ -62,27 +62,34 @@ class Payment extends Component {
             }
         }
     }
-    onChangeHandler = (event) => {
-        console.log(event.target.value);
+    onChangeHandler = (event , inputIdentifier) => {
+        const updatedOrderForms  = {
+            ...this.state.orderForms
+        }   
+        const updatedFormElement = {
+            ...updatedOrderForms[inputIdentifier]
+        }
+        updatedFormElement.value = event.target.value;
+        updatedOrderForms[inputIdentifier] = updatedFormElement;
+        this.setState({
+            orderForms : updatedOrderForms
+        })
     };
 
     paymentHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
+        let customerInfo = {};
+        for(let element in this.state.orderForms) {
+            customerInfo[element] = this.state.orderForms[element].value
+        }
+
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.totalPrice.toFixed(2),
-            customer: {
-                name: 'Diego',
-                address : {
-                    street : 'Hello st 1',
-                    zipCode: '12345',
-                    country: 'Korea'
-                },
-                email: 'abcdefg@yopmail.com'
-            },
-            deliveryMethod: 'Express'
+            price: (this.props.totalPrice).toFixed(2),
+            orderData: customerInfo
         }
+
         axios.post('/orders.json' , order)
         .then(response => {
             this.setState({loading: false});
@@ -103,15 +110,15 @@ class Payment extends Component {
                 config: this.state.orderForms[key]
             })
         }
-        let form = <div>Please input your information for payment
-                        <form>
-                            {formElementsArray.map(orderForms => (
+        let form = <div>Please input your information for the payment
+                        <form onSubmit={this.paymentHandler}>
+                            {formElementsArray.map(FormElement => (
                                 <Input
-                                    key ={orderForms.id} 
-                                    inputtype={orderForms.config.elementType} 
-                                    elementConfig={orderForms.config.elementConfig}
-                                    value={orderForms.config.value}
-                                    changed={this.onChangeHandler}
+                                    key ={FormElement.id} 
+                                    inputtype={FormElement.config.elementType} 
+                                    elementConfig={FormElement.config.elementConfig}
+                                    value={FormElement.config.value}
+                                    changed={(event)=>this.onChangeHandler(event, FormElement.id)}
                                 />
                             ))}
                         </form>
