@@ -3,10 +3,21 @@ import classes from './Input.module.css';
 
 const input =(props) => {
   let inputElement = null;
+  const inputClasses = [classes.InputElement];
+
+  let validationErrorMsg = null;
+
+  if(props.inValid && props.shouldValidate && props.usedForm) {
+
+    inputClasses.push(classes.Invaild);
+    validationErrorMsg= <span>Please enter a valid {props.valueName.toLowerCase()}</span>;
+
+  }
+
     switch(props.inputtype) {
       case('input'):
         inputElement = <input 
-          className={classes.InputElement} 
+          className={inputClasses.join(' ')} 
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
@@ -46,6 +57,7 @@ const input =(props) => {
   <div className={classes.Input}>
         <label className={classes.Label}>{props.label}</label>
         {inputElement}
+        <p className={classes.ErrorMsg}>{validationErrorMsg}</p>
     </div>
   );
 };

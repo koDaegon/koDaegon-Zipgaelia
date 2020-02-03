@@ -27,3 +27,13 @@
     outline: none;
     background-color: #ccc;
 }
+
+.Invaild {
+    background-color: coral;
+    border: 1px solid red;
+}
+
+.ErrorMsg{
+    color: red;
+    margin: 1px 0;
+}

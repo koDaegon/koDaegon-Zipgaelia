@@ -8,7 +8,6 @@ import Input from '../../../components/UI/Input/Input';
 class Payment extends Component {
 
     state = {
-        loading: false,
         orderForms: {
             name: {
                 elementType: 'input',
@@ -17,6 +16,11 @@ class Payment extends Component {
                     placeholder: 'Your Name'
                 },
                 value: '',
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             email: {
                 elementType: 'input',
@@ -25,6 +29,11 @@ class Payment extends Component {
                     placeholder: 'Your email'
                 },
                 value: '',
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             street: {
                 elementType: 'input',
@@ -33,6 +42,11 @@ class Payment extends Component {
                     placeholder: 'Street'
                 },
                 value: '',
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             zipCode: {
                 elementType: 'input',
@@ -41,6 +55,13 @@ class Payment extends Component {
                     placeholder: 'Zipcode'
                 },
                 value: '',
+                validation: {
+                    required: true,
+                    maxLength: 5,
+                    minLength: 5
+                },
+                valid: false,
+                touched: false
             },
             country: {
                 elementType: 'input',
@@ -49,6 +70,11 @@ class Payment extends Component {
                     placeholder: 'Country'
                 },
                 value: '',
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -58,23 +84,60 @@ class Payment extends Component {
                         {value: 'regular', displayName: 'Regular'}
                         ]
                 },
-                value: '',
+                value: 'Express',
+                validation: {},
+                valid: true,
             }
-        }
+        },
+        loading: false,
+        overallFormValid: false
     }
+
+    checkValidation(value , rules) {
+        let isValid = true;
+        
+        if(rules.required)
+        {
+            isValid = value.trim() !== '' && isValid;
+        }
+
+        if(rules.minLength)
+        {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+
+        if(rules.maxLength)
+        {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+
+        return isValid;
+    }
+
     onChangeHandler = (event , inputIdentifier) => {
-        const updatedOrderForms  = {
+        const updatedOrderForm  = {
             ...this.state.orderForms
         }   
         const updatedFormElement = {
-            ...updatedOrderForms[inputIdentifier]
+            ...updatedOrderForm[inputIdentifier]
         }
         updatedFormElement.value = event.target.value;
-        updatedOrderForms[inputIdentifier] = updatedFormElement;
+        updatedFormElement.touched = true;
+        updatedFormElement.valid = this.checkValidation(updatedFormElement.value ,updatedFormElement.validation);
+        
+
+        let allValid = true;
+        for(let inputIdentifier in updatedOrderForm){
+            allValid = updatedOrderForm[inputIdentifier].valid && allValid;   
+        }
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        
         this.setState({
-            orderForms : updatedOrderForms
+            orderForms : updatedOrderForm,
+            overallFormValid : allValid
         })
     };
+
 
     paymentHandler = (event) => {
         event.preventDefault();
@@ -112,17 +175,21 @@ class Payment extends Component {
         }
         let form = <div>Please input your information for the payment
                         <form onSubmit={this.paymentHandler}>
-                            {formElementsArray.map(FormElement => (
+                            {formElementsArray.map(formElement => (
                                 <Input
-                                    key ={FormElement.id} 
-                                    inputtype={FormElement.config.elementType} 
-                                    elementConfig={FormElement.config.elementConfig}
-                                    value={FormElement.config.value}
-                                    changed={(event)=>this.onChangeHandler(event, FormElement.id)}
+                                    key ={formElement.id} 
+                                    valueName ={formElement.id}
+                                    inputtype={formElement.config.elementType} 
+                                    elementConfig={formElement.config.elementConfig}
+                                    value={formElement.config.value}
+                                    changed={(event)=>this.onChangeHandler(event, formElement.id)}
+                                    shouldValidate={formElement.config.validation}
+                                    inValid={!formElement.config.valid}
+                                    usedForm={formElement.config.touched}
                                 />
                             ))}
                         </form>
-                        <Button btnType="Success" clicked={this.paymentHandler}>Checkout</Button>
+                        <Button disabled= {!this.state.overallFormValid} btnType="Success" clicked={this.paymentHandler}>Checkout</Button>
                     </div>;
 
         if(this.state.loading) {
