@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../axios-order';
+import {connect} from 'react-redux';
+
 import classes from './Payment.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -148,7 +150,7 @@ class Payment extends Component {
         }
 
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ings,
             price: (this.props.totalPrice).toFixed(2),
             orderData: customerInfo
         }
@@ -203,4 +205,11 @@ class Payment extends Component {
     }
 }
 
-export default Payment;
+const mapStatetoProps =(state) => {
+    return  {
+        ings: state.ingredients,
+        totalPrice: state.totalPrice
+    }
+}
+
+export default connect(mapStatetoProps)(Payment);
