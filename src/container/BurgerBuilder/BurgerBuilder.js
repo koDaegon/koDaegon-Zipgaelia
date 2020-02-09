@@ -17,18 +17,11 @@ class BurgerBuilder extends Component {
     state = {
         reviewPurchase : false,
         loading: false,
-        error: false
     }
 
     componentDidMount() {
         console.log(this.props);
-        // axios.get('https://zipgaelia.firebaseio.com/ingredients.json')
-        // .then(response => {
-        //     this.setState({ingredients: response.data});
-        // })
-        // .catch(error => {
-        //     this.setState({error: true});
-        // });
+        this.props.onInitIngredients();
     }
 
     componentDidUpdate () {
@@ -72,7 +65,7 @@ class BurgerBuilder extends Component {
 
         let orderSummary =null;
 
-        let burger = this.state.error ? <p>something went wrong with the server!</p> : <Spinner />;
+        let burger = this.props.error ? <p>something went wrong with the server!</p> : <Spinner />;
 
         if(this.props.ings) {
             burger =  (
@@ -111,14 +104,16 @@ const mapStatetoProps = (state) => {
     return {
         ings: state.ingredients,
         totalPrice: state.totalPrice,
-        counter: state.ingCounter
+        counter: state.ingCounter,
+        error: state.error
     }
 }
 
 const mapDispatchtoProps = (dispatch) => {
     return {
         onIngredientAdded: (ingType) => dispatch(bugerBuilderActions.addIngredient(ingType)),
-        onIngredientRemoved: (ingType) => dispatch(bugerBuilderActions.removeIngredient(ingType))    
+        onIngredientRemoved: (ingType) => dispatch(bugerBuilderActions.removeIngredient(ingType)),
+        onInitIngredients: () => dispatch(bugerBuilderActions.fetchIngredients())    
     }
 }
 
