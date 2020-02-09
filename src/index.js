@@ -2,12 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import {createStore} from 'redux'
+import {createStore , combineReducers} from 'redux'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom';
-import reducer from './store/reducer';
+import bugerBuilderReducer from './store/reducers/burgerBuilder';
+import orderReducer from './store/reducers/order';
 
-const store = createStore(reducer);
+// const rootReducers = combineReducers({
+//     burgerBuilder : bugerBuilderReducer,
+//     order: orderReducer
+//     });
+
+const store = createStore(bugerBuilderReducer , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 const app = (
     <Provider store={store}>

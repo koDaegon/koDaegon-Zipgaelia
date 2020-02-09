@@ -1,6 +1,6 @@
 import React ,{Component} from 'react';
 import {connect} from 'react-redux';
-import * as actionType from '../../store/action';
+// import * as actionType from '../../store/actions/actionType';
 //import {Link} from 'react-router-dom';
 import Aux from '../../hoc/Auxiliary/Auxiliary'; 
 import Burger from  '../../components/Burger/Burger';
@@ -10,6 +10,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-order';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import * as bugerBuilderActions from '../../store/actions/index';
 
 
 class BurgerBuilder extends Component {
@@ -46,6 +47,7 @@ class BurgerBuilder extends Component {
         }, 0);
         return sum > 0;
     };
+    
 
     purchaseHandler= () => {
         this.setState({reviewPurchase: true})
@@ -81,7 +83,7 @@ class BurgerBuilder extends Component {
                     ingredientRemoved= {this.props.onIngredientRemoved}
                     disabled= {disabledInfo}
                     price= {this.props.totalPrice}
-                    checkOut= {this.updatePurchaseStatus(this.props.ings)}
+                    checkOut= {this.props.counter>0 ? true : false}
                     reviewed= {this.purchaseHandler}/>
                 </Aux>
             );
@@ -108,14 +110,15 @@ class BurgerBuilder extends Component {
 const mapStatetoProps = (state) => {
     return {
         ings: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        counter: state.ingCounter
     }
 }
 
 const mapDispatchtoProps = (dispatch) => {
     return {
-        onIngredientAdded: (ingType) => dispatch({type: actionType.ADD_INGREDIENT, ingredientType : ingType}),
-        onIngredientRemoved: (ingType) => dispatch({type: actionType.REMOVE_INGREDIENT, ingredientType : ingType})    
+        onIngredientAdded: (ingType) => dispatch(bugerBuilderActions.addIngredient(ingType)),
+        onIngredientRemoved: (ingType) => dispatch(bugerBuilderActions.removeIngredient(ingType))    
     }
 }
 
