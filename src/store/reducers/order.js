@@ -23,7 +23,6 @@ const reducer = (state=intialState, action) => {
                 ...action.orderData,
                 id: action.orderID,
             };
-            
             return {
                 ...state,
                 orders: state.orders.concat(newOrder),
@@ -31,6 +30,22 @@ const reducer = (state=intialState, action) => {
                 purchased: true
             }
         case(actionTypes.PURCHASE_BURGER_FAIL):
+            return {
+                ...state,
+                loading: false
+            }
+        case(actionTypes.FETCH_ORDERS_START):
+            return {
+                ...state,
+                lodaing: true
+            }
+        case(actionTypes.FETCH_ORDERS_SUCCESS):
+            return {
+                ...state,
+                orders: action.orders,
+                loding: false
+            }
+        case(actionTypes.FETCH_ORDERS_FAIL):
             return {
                 ...state,
                 loading: false
