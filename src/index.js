@@ -9,14 +9,14 @@ import {BrowserRouter} from 'react-router-dom';
 import bugerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
 
-// const rootReducers = combineReducers({
-//     burgerBuilder : bugerBuilderReducer,
-//     order: orderReducer
-//     });
+const rootReducers = combineReducers({
+        burgerBuilder : bugerBuilderReducer,
+        order: orderReducer
+    });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(bugerBuilderReducer ,composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(rootReducers ,composeEnhancers(applyMiddleware(thunk)));
 
 const app = (
     <Provider store={store}>

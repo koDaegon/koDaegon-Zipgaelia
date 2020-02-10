@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
@@ -15,17 +15,25 @@ class Checkout extends Component {
 
     render() {
         console.log(this.props);
+        let summary = <Redirect to="/"/>
+        if(this.props.ings){
+            const purchasedRedirect = this.props.purchased ? <Redirect to='/' /> : null;
+            summary = (
+                <div>
+                    {purchasedRedirect}
+                    <CheckoutSummary 
+                    ingredients= {this.props.ings}
+                    purchseCanceled= {this.purchseCanceledHandler}
+                    purchseContinued= {this.purchseContinuedHandler} />
+                    <Route 
+                    path={`${this.props.match.url}/payment`} 
+                    component={Payment} />  
+                </div>
+            );
+        }
         return (
             <div>        
-                <CheckoutSummary 
-                ingredients= {this.props.ings}
-                purchseCanceled= {this.purchseCanceledHandler}
-                purchseContinued= {this.purchseContinuedHandler} />
-                
-                <Route 
-                    path={`${this.props.match.url}/payment`} 
-                    component={Payment}  
-                />
+               {summary}
             </div>
         )
     }
@@ -34,8 +42,9 @@ class Checkout extends Component {
 
 const mapStatetoProps= (state) => {
     return {
-        ings : state.ingredients,
-        price: state.totalPrice
+        ings : state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        purchased: state.order.purchased
     } 
 }
 

@@ -10,7 +10,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-order';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import * as bugerBuilderActions from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 
 class BurgerBuilder extends Component {
@@ -51,6 +51,7 @@ class BurgerBuilder extends Component {
     };
 
     purchaseContinueHandler= () => {
+        this.props.onInitPurchase();
         this.props.history.push('/checkout');
     };
 
@@ -80,11 +81,12 @@ class BurgerBuilder extends Component {
                     reviewed= {this.purchaseHandler}/>
                 </Aux>
             );
-            orderSummary = <OrderSummary 
-            ingredients= {this.props.ings}  
-            purchaseCancelled= {this.purchaseCancelHandler}
-            purchaseContinued= {this.purchaseContinueHandler}
-            price= {this.props.totalPrice} />;
+            orderSummary = 
+                <OrderSummary 
+                ingredients= {this.props.ings}  
+                purchaseCancelled= {this.purchaseCancelHandler}
+                purchaseContinued= {this.purchaseContinueHandler}
+                price= {this.props.totalPrice} />;
         }
 
         if(this.state.loading) {
@@ -102,18 +104,19 @@ class BurgerBuilder extends Component {
 }
 const mapStatetoProps = (state) => {
     return {
-        ings: state.ingredients,
-        totalPrice: state.totalPrice,
-        counter: state.ingCounter,
-        error: state.error
+        ings: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        counter: state.burgerBuilder.ingCounter,
+        error: state.burgerBuilder.error
     }
 }
 
 const mapDispatchtoProps = (dispatch) => {
     return {
-        onIngredientAdded: (ingType) => dispatch(bugerBuilderActions.addIngredient(ingType)),
-        onIngredientRemoved: (ingType) => dispatch(bugerBuilderActions.removeIngredient(ingType)),
-        onInitIngredients: () => dispatch(bugerBuilderActions.fetchIngredients())    
+        onIngredientAdded: (ingType) => dispatch(actions.addIngredient(ingType)),
+        onIngredientRemoved: (ingType) => dispatch(actions.removeIngredient(ingType)),
+        onInitIngredients: () => dispatch(actions.fetchIngredients()),
+        onInitPurchase: () => dispatch(actions.purchaseInit())    
     }
 }
 
