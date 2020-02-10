@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import * as orderActions from '../../../store/actions/index';
+import * as actions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../../axios-order';
 import classes from './Payment.module.css';
@@ -208,7 +208,7 @@ const mapStatetoProps =(state) => {
 
 const mapDispatchtoProps = (dispatch) => {
     return {
-        onBurgerStart: (orderData)=>dispatch(orderActions.purchaseBurger(orderData))
+        onBurgerStart: (orderData)=>dispatch(actions.purchaseBurger(orderData))
     }
 }
 
