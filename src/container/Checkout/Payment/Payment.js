@@ -173,7 +173,7 @@ class Payment extends Component {
                                 <Input
                                     key ={formElement.id} 
                                     valueName ={formElement.id}
-                                    inputtype={formElement.config.elementType} 
+                                    inputType={formElement.config.elementType} 
                                     elementConfig={formElement.config.elementConfig}
                                     value={formElement.config.value}
                                     changed={(event)=>this.onChangeHandler(event, formElement.id)}
