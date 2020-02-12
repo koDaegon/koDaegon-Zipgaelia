@@ -6,6 +6,7 @@ import './App.css';
 import BurgerBuilder from './container/BurgerBuilder/BurgerBuilder';
 import Checkout from './container/Checkout/Checkout';
 import Orders from './container/Orders/Orders';
+import Auth from './container/Auth/Auth';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     <div>
       <Layout>
         <Switch>
+          <Route path="/auth" component={Auth} />
           <Route path="/checkout" component={Checkout} /> 
           <Route path="/orders" component={Orders} />
           <Route path="/" component={BurgerBuilder} />

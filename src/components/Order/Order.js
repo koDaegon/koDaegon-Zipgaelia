@@ -17,7 +17,7 @@ const order = (props) => {
                     {ig.name} : ({ig.amount})</span>
         }); 
     return(
-        <div key={props.key} className={classes.Order}>
+        <div id={props.id} className={classes.Order}>
             <p>ingredients: {ingredientOutput} </p>
             <p>Price: <strong>$ {props.price}</strong></p>
         </div>    
