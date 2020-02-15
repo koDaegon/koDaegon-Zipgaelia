@@ -156,7 +156,7 @@ class Payment extends Component {
         // console.log(order);
         // console.log(this.props);
         //this.props.history.push('/');
-        this.props.onBurgerStart(order);
+        this.props.onBurgerStart(order, this.props.token);
     };
     
     render() {
@@ -202,13 +202,14 @@ const mapStatetoProps =(state) => {
         ings: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
-        purchased: state.order.purchased
+        purchased: state.order.purchased,
+        token: state.auth.token
     }
 }
 
 const mapDispatchtoProps = (dispatch) => {
     return {
-        onBurgerStart: (orderData)=>dispatch(actions.purchaseBurger(orderData))
+        onBurgerStart: (orderData, token)=>dispatch(actions.purchaseBurger(orderData, token))
     }
 }
 
