@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 
 import Input from '../../components/UI/Input/Input';
@@ -129,6 +130,10 @@ class Auth extends Component {
             errMsg = (<p>{this.props.error.message}</p>);
         }
 
+        let loginSuccessPage = null;
+        if(this.props.token) {
+            loginSuccessPage = <Redirect to ='/' />
+        }
         return (
             <div className={classes.Auth}>
                 {errMsg}
@@ -140,6 +145,7 @@ class Auth extends Component {
                     btnType="Danger"
                     clicked={this.switchAuthMode}
                      >SWITCH TO {this.state.isSignUp ? "SIGNIN" : "SIGNUP" } </Button>
+            {loginSuccessPage}
             </div>
         )
     }    
@@ -148,7 +154,8 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading : state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        token: state.auth.token
     }
 }
 
