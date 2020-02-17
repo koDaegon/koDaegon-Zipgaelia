@@ -22,7 +22,7 @@ const buildControls = (props) => (
                 />
         ))}
         <button className= {classes.OrderButton} disabled={!props.checkOut} 
-        onClick={props.reviewed}>CHECK OUT</button>
+        onClick={props.reviewed}>{props.authenticated ? 'CHECK OUT' : 'PLEASE LOGIN FIRST'} </button>
     </div>
 );
 

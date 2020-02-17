@@ -131,7 +131,7 @@ class Auth extends Component {
         }
 
         let loginSuccessPage = null;
-        if(this.props.token) {
+        if(this.props.isAuth) {
             loginSuccessPage = <Redirect to ='/' />
         }
         return (
@@ -155,7 +155,7 @@ const mapStateToProps = state => {
     return {
         loading : state.auth.loading,
         error: state.auth.error,
-        token: state.auth.token
+        isAuth: state.auth.token !== null
     }
 }
 
