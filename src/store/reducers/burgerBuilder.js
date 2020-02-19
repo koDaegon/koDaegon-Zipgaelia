@@ -5,7 +5,8 @@ const initialState= {
     ingredients: null,
     totalPrice: 4,
     ingCounter: null,
-    error: false
+    error: false,
+    building: false
 }
 
 const INGREDIENT_PRICES ={
@@ -31,7 +32,8 @@ const addIngredient = (state, action) => {
     const updatedState= {
             ingredients: updatedIngredients,
             totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientType],
-            ingCounter: state.ingCounter + 1
+            ingCounter: state.ingCounter + 1,
+            building: true
         }
     return updatedObject(state,updatedState);
 }
@@ -58,7 +60,8 @@ const fetchIngredients = (state, action) => {
     const updatedState = {
         ingredients: updatedIngredients,
         error: false,
-        totalPrice : 4
+        totalPrice : 4,
+        building: false
     }
     return updatedObject(state, updatedState);
 }
