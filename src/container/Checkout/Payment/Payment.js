@@ -151,7 +151,8 @@ class Payment extends Component {
         const order = {
             ingredients: this.props.ings,
             price: (this.props.totalPrice).toFixed(2),
-            orderData: customerInfo
+            orderData: customerInfo,
+            userId: this.props.userId
         }
         // console.log(order);
         // console.log(this.props);
@@ -203,7 +204,8 @@ const mapStatetoProps =(state) => {
         totalPrice: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
         purchased: state.order.purchased,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 

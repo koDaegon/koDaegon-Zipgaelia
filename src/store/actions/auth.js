@@ -82,11 +82,11 @@ export const setAuthRedirectPath = (path) => {
 export const authCheckState = () => {
     return dispatch => {
         const token = localStorage.getItem('token');
-        if(!token){
+        if(!token) {
             dispatch(logout());
         } else {
             const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            if(expirationDate <= new Date ()) {
+            if(expirationDate <= new Date()) {
                 dispatch(logout());
             } else{
                 const userId = localStorage.getItem('userId');
