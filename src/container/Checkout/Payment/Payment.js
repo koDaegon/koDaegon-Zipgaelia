@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+
 import * as actions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../../axios-order';
+
 import classes from './Payment.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import {updatedObject} from '../../../shared/utility';
 
 class Payment extends Component {
 
@@ -120,12 +123,12 @@ class Payment extends Component {
         const updatedOrderForm  = {
             ...this.state.orderForms
         }   
-        const updatedFormElement = {
-            ...updatedOrderForm[inputIdentifier]
-        }
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.touched = true;
-        updatedFormElement.valid = this.checkValidation(updatedFormElement.value ,updatedFormElement.validation);
+        const updatedFormElement = updatedObject(this.state.orderForms[inputIdentifier] , {
+            value: event.target.value,
+            touched: true,
+            valid: this.checkValidation(event.target.value ,this.state.orderForms.validation)
+            
+        });
         
 
         let allValid = true;
