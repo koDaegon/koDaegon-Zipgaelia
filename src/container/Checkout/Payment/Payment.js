@@ -9,7 +9,7 @@ import classes from './Payment.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import {updatedObject} from '../../../shared/utility';
+import {updatedObject, checkValidation} from '../../../shared/utility';
 
 class Payment extends Component {
 
@@ -98,44 +98,21 @@ class Payment extends Component {
         overallFormValid: false
     }
 
-    checkValidation(value , rules) {
-        let isValid = true;
-        
-        if(rules.required)
-        {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if(rules.minLength)
-        {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if(rules.maxLength)
-        {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-
-        return isValid;
-    }
-
     onChangeHandler = (event , inputIdentifier) => {
-        const updatedOrderForm  = {
-            ...this.state.orderForms
-        }   
         const updatedFormElement = updatedObject(this.state.orderForms[inputIdentifier] , {
             value: event.target.value,
             touched: true,
-            valid: this.checkValidation(event.target.value ,this.state.orderForms.validation)
-            
+            valid: checkValidation(event.target.value ,this.state.orderForms[inputIdentifier].validation)
         });
         
+        const updatedOrderForm = updatedObject(this.state.orderForms, {
+            [inputIdentifier] : updatedFormElement
+        });
 
         let allValid = true;
         for(let inputIdentifier in updatedOrderForm){
             allValid = updatedOrderForm[inputIdentifier].valid && allValid;   
         }
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
         
         this.setState({
             orderForms : updatedOrderForm,
