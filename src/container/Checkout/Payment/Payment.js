@@ -134,9 +134,6 @@ class Payment extends Component {
             orderData: customerInfo,
             userId: this.props.userId
         }
-        // console.log(order);
-        // console.log(this.props);
-        //this.props.history.push('/');
         this.props.onBurgerStart(order, this.props.token);
     };
     
